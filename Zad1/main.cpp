@@ -15,13 +15,17 @@ int main(){
 
     epsylon = 1.0;
 
-    while(1 + epsylon > stala) {
+    double a;
+    a = 1.0 + epsylon;
+
+    while(a > stala) {
         epsylon /= 2.0;
         t += 1;
+        a = 1.0f + epsylon;
     }
 
-    cout << t << endl;
-    cout << epsylon;
+    cout << "liczba bitow: " << t << endl;
+    cout << "epsilon: " << epsylon * 2;
 
     return 0;
 }

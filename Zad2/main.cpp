@@ -21,6 +21,19 @@ double taylor(double x) {
     return suma;
 }
 
+//double taylor(double x)
+//{
+//    double suma = 1.0;
+//    double poprzedni = 1.0;
+//    for(int i=2; i<40; i++)
+//    {
+//        poprzedni*=x/(double)i;
+//        poprzedni = -poprzedni;
+//        suma+=poprzedni;
+//    }
+//    return suma;
+//}
+
 double wartosc_przyblizona(double x) {
     double f = (1 - exp(-x)) / x;
     return f;
