@@ -16,12 +16,12 @@ int main(){
     epsylon = 1.0;
 
     double a;
-    a = 1.0 + epsylon;
+//    a = 1.0 + epsylon;
 
-    while(a > stala) {
+    while(1.0 + epsylon > stala) {
         epsylon /= 2.0;
         t += 1;
-        a = 1.0f + epsylon;
+//        a = 1.0f + epsylon;
     }
 
     cout << "liczba bitow: " << t << endl;
