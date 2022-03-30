@@ -8,8 +8,9 @@
 using namespace std;
 
 const int n_max = 50;
-const double TOLX = 1e-8;
-const double TOLF = 1e-8;
+const double TOLX = 1e-12;
+const double TOLF = 1e-12;
+
 
 double pierwsza_funkcja(double x) {
     return pow(sin(x/4.0), 2.0) - x;
@@ -52,7 +53,7 @@ void metoda_Picarda(double(*funkcja) (double), double(*funkcja_picard)(double), 
     }
     else {
         double xn1, fxn, EST;
-        cout << "  n \t\t   xn \t\t    EST \t \t  |f(xn)|" << endl;
+        cout << "   n \t\t   xn \t\t    EST \t \t  |f(xn)|" << endl;
         for (int i = 0; i < n_max; i++) {
             fxn = fabs(funkcja(xn));
             xn1 = funkcja_picard(xn);
@@ -62,7 +63,7 @@ void metoda_Picarda(double(*funkcja) (double), double(*funkcja_picard)(double), 
             cout.width(4);
             cout << i << "\t\t" << xn << "\t\t" << EST << " \t\t" << fxn <<endl;
 
-            if (EST < TOLX || fxn < TOLF) break;
+            if (EST < TOLX && fxn < TOLF) break;
         }
     }
 }
@@ -71,11 +72,11 @@ void metoda_bisekcji(double(*funkcja)(double), double a, double b) {
     cout << "Metoda Bisekcji: " << endl;
 
     if (funkcja(a) * funkcja(b) > 0) {
-        cout << "Podano zly przedzial." << endl;
+        cout << "Zly przedzial." << endl;
     }
     else {
         double EST, xn, fxn;
-        cout << "  n \t\t    xn \t\t       EST \t \t |f(xn)|" << endl;
+        cout << "   n \t\t    xn \t\t       EST \t \t |f(xn)|" << endl;
         for (int i = 0; i < n_max; i++) {
             xn = (a + b) / 2;
             EST = fabs(b - a) / 2;
@@ -88,7 +89,8 @@ void metoda_bisekcji(double(*funkcja)(double), double a, double b) {
             cout.width(4);
             cout << i << "\t\t" << xn << "\t\t" << EST << " \t\t" << fabs(fxn) << endl;
 
-            if (EST < TOLX || fabs(fxn) < TOLF) break;
+            if (fabs(fxn) < TOLF) break;
+//            (EST < TOLX && fabs(fxn) < TOLF) ||
         }
     }
 }
@@ -97,7 +99,7 @@ void metoda_Newtona(double(*funkcja)(double), double(*funkcja_pochodna)(double),
     cout << "Metoda Newtona: " << endl;
 
     double fxn, xn1, EST;
-    cout << "  n \t\t    xn \t\t       EST \t \t |f(xn)|" << endl;
+    cout << "   n \t\t    xn \t\t       EST \t \t |f(xn)|" << endl;
     for (int i = 0; i < n_max; i++) {
         xn1 = xn;
         fxn = funkcja(xn1);
@@ -107,7 +109,7 @@ void metoda_Newtona(double(*funkcja)(double), double(*funkcja_pochodna)(double),
         cout.width(4);
         cout << i << "\t\t" << xn << "\t\t" << EST << " \t\t" << fabs(fxn) << endl;
 
-        if (EST < TOLX || fabs(fxn) < TOLF) break;
+        if (EST < TOLX && fabs(fxn) < TOLF) break;
     }
 }
 
@@ -115,7 +117,7 @@ void metoda_siecznych(double(*funkcja)(double), double xn0, double xn1) {
     cout << "Metoda Siecznych: " << endl;
 
     double xn2, EST, fxn2;
-    cout << "  n \t\t    xn \t\t       EST \t \t |f(xn)|" << endl;
+    cout << "   n \t\t    xn \t\t       EST \t \t |f(xn)|" << endl;
     for (int i = 0; i < n_max; i++) {
         xn2 = xn1 - funkcja(xn1) / ((funkcja(xn1) - funkcja(xn0)) / (xn1 - xn0));
         xn0 = xn1;
@@ -126,23 +128,23 @@ void metoda_siecznych(double(*funkcja)(double), double xn0, double xn1) {
         cout.width(4);
         cout << i << "\t\t" << xn2 << "\t\t" << EST << " \t\t" << fabs(fxn2) << endl;
 
-        if (EST < TOLX || fxn2 < TOLF) break;
+        if (EST < TOLX && fxn2 < TOLF) break;
     }
 }
 
 
 int main() {
     cout << "Pierwsza funkcja: sin^2(x/4) - x = 0" << endl;
-    metoda_Picarda(pierwsza_funkcja, pierwsza_funckja_picard, pierwsza_funkcja_picard_pochodna, 5);
-    metoda_bisekcji(pierwsza_funkcja, -0.1, 0.7);
+    metoda_Picarda(pierwsza_funkcja, pierwsza_funckja_picard, pierwsza_funkcja_picard_pochodna, 0.5);
+    metoda_bisekcji(pierwsza_funkcja, -4.0, 6.2);
     metoda_Newtona(pierwsza_funkcja, pochodna_pierwsza_funkcja, 0.6);
-    metoda_siecznych(pierwsza_funkcja, 5, 10);
+    metoda_siecznych(pierwsza_funkcja, 5.0, 10.0);
 
     cout << endl << "Druga funkcja: tan(2x) - x - 1 = 0" << endl;
-    metoda_Picarda(druga_funkcja, druga_funkcja_picard, druga_funkcja_picard_pochodna, 5);
-    metoda_bisekcji(druga_funkcja, -5, 5);
-    metoda_Newtona(druga_funkcja, pochodna_druga_funkcja, 5);
-    metoda_siecznych(druga_funkcja, 10, 5);
+    metoda_Picarda(druga_funkcja, druga_funkcja_picard, druga_funkcja_picard_pochodna, 5.0);
+    metoda_bisekcji(druga_funkcja, -0.1, 0.7);
+    metoda_Newtona(druga_funkcja, pochodna_druga_funkcja, 5.0);
+    metoda_siecznych(druga_funkcja, 10.0, 5.0);
 
     return 0;
 }

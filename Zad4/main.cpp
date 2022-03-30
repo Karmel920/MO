@@ -1,9 +1,10 @@
 #include <iostream>
 #include <math.h>
+#include <algorithm>
 
 using namespace std;
 
-//funkcje
+//funkcje z ukladu
 double funkcja1(double x, double y, double z) {
     return x*x + y*y + z*z - 2;
 }
@@ -60,29 +61,30 @@ double f3z() {
 
 
 //jakobian(wyznacznik macierzy jakobiego)
-double Jakobian(double x, double y, double z) {
+double detJ(double x, double y, double z) {
     return -4*x*z * (1 + 2*y);
 }
 
 
 int main() {
-    const double TOLX = 1e-7;
-    const double TOLF = 1e-7;
-    int n_max = 100;
-    double x = 1.0, y = 1.0, z = 1.0;
+    const double TOLX = 1e-12;
+    const double TOLF = 1e-12;
+    int n_max = 50;
+    double x = 3.0, y = 4.0, z = 5.0;
     double delta_x, delta_y, delta_z, x1, y1, z1;
-    double est_x, est_y, est_z;
-    double fn;
+    double est_x, est_y, est_z, est;
+    double fn1, fn2, fn3, fn;
 
-    cout << "   n \t  xn \t\t   yn\t\tzn\t EST_x\t\t EST_y\t\t EST_z\t\t |f(xn)|" << endl;
+    cout << "   n \t  xn \t\t   yn\t\tzn\t EST\t\t\t |fn|" << endl;
+//    |fn2|	 |fn3|
 
     for(int i = 1; i < n_max; i++) {
-        delta_x = (funkcja2(x, y) * f3y() * f1z(z) - f1z(z) * f2y(y) * funkcja3(x, y)) / Jakobian(x, y, z);
-        delta_y = (f2x(x) * funkcja3(x, y) * f1z(z) - f1z(z) * funkcja2(x, y) * f3x(x)) / Jakobian(x, y, z);
+        delta_x = (funkcja2(x, y) * f3y() * f1z(z) - f1z(z) * f2y(y) * funkcja3(x, y)) / detJ(x, y, z);
+        delta_y = (f2x(x) * funkcja3(x, y) * f1z(z) - f1z(z) * funkcja2(x, y) * f3x(x)) / detJ(x, y, z);
         delta_z = (f1x(x) * f2y(y) * funkcja3(x, y) + f2x(x) * f3y() * funkcja1(x, y, z) +
                    f3x(x) * f1y(y) * funkcja2(x, y) -
                    (funkcja1(x, y, z) * f2y(y) * f3x(x) + funkcja2(x, y) * f3y() * f1x(x) +
-                    funkcja3(x, y) * f1y(y) * f2x(x))) / Jakobian(x, y, z);
+                    funkcja3(x, y) * f1y(y) * f2x(x))) / detJ(x, y, z);
         x1 = x - delta_x;
         y1 = y - delta_y;
         z1 = z - delta_z;
@@ -91,13 +93,17 @@ int main() {
         est_y = fabs(y - y1);
         est_z = fabs(z - z1);
 
-        fn = funkcja1(x1, y1, z1);
+        fn1 = fabs(funkcja1(x1, y1, z1));
+        fn2 = fabs(funkcja2(x, y));
+        fn3 = fabs(funkcja3(x, y));
+
+        est = max(max(est_x, est_y),est_z);
+        fn = max(max(fn1, fn2), fn3);
 
         cout.width(4);
-        cout << i << "\t" << x1 << "\t" << y1 << "\t" << z1 << "\t"<< est_x << "\t" << est_y << "\t" << est_z << " \t" << fabs(fn) << endl;
+        cout << i << "\t" << x1 << " \t" << y1 << " \t" << z1 << "    \t"<< est << "      \t" << fabs(fn)  << endl;
 
-        if(est_x < TOLX && est_y < TOLX && est_z < TOLX) break;
-        if(fabs(fn) < TOLF) break;
+        if(est < TOLX && fn < TOLF) break;
 
         x = x1;
         y = y1;
