@@ -14,6 +14,7 @@ void destroyVector(double *vector);
 void Thomass(double *et, double *r, double *u, double *d, double *l, double *b, int n);
 void vectorX(double *et, double *r, double *u, double *x, int n);
 
+
 int main(){
     int n = 6;
     double *u = createDoubleVector(n - 1);
@@ -29,12 +30,6 @@ int main(){
     l[0] = 1.0 / 3.0; l[1] = 1.0 / 5.0; l[2] = 1.0 / 7.0; l[3] = 1.0 / 9.0; l[4] = 1.0 / 11.0;
     b[0] = 31.0; b[1] = 165.0 / 4.0; b[2] = 917.0 / 30.0; b[3] = 851.0 / 28.0; b[4] = 3637.0 / 90.0;
     b[5] = 332.0 / 11.0;
-
-//    for(int i = 0; i < n; i++) {
-//        x[i] = 1;
-//        r[i] = 1;
-//        et[i] = 1;
-//    }
 
     cout << endl << "\n\tWektor u: " << endl;
     printVector(u, n-1);
@@ -64,9 +59,9 @@ int main(){
     destroyVector(d);
     destroyVector(l);
     destroyVector(b);
-//    destroyVector(x);
-//    destroyVector(et);
-//    destroyVector(r);
+    destroyVector(x);
+    destroyVector(et);
+    destroyVector(r);
 
     return 0;
 }
@@ -93,7 +88,7 @@ void vectorsInput(double *u, double *d, double *l, double*b, int columns) {
 
 void printVector(double *vector, int columns) {
     for (int i = 0; i < columns; i++)
-        cout << vector[i] << " ";
+        cout << vector[i] << "  ";
     cout << endl;
 }
 
@@ -104,14 +99,14 @@ void destroyVector(double *vector) {
 void Thomass(double *et, double *r, double *u, double *d, double *l, double *b, int n) {
     et[0] = d[0];
     r[0] = b[0];
-    for(int i = 1; i <= n; i++) {
+    for(int i = 1; i < n; i++) {
         et[i] = d[i] - ((l[i - 1] * u[i - 1]) / et[i - 1]);
         r[i] = b[i] - ((l[i - 1] * r[i - 1]) / et[i - 1]);
     }
 }
 
 void vectorX(double* et, double *r, double *u, double *x, int n) {
-    x[n] = r[n] / et[n];
-    for(int i = n - 1; i >= 0; i--)
+    x[n - 1] = r[n - 1] / et[n - 1];
+    for(int i = n - 2; i >= 0; i--)
         x[i] = (r[i] - (u[i] * x[i + 1])) / et[i];
 }
