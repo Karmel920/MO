@@ -10,18 +10,13 @@ int main(){
      */
 
     int t = -1;
-    double epsylon;
-    double stala = 1.0;
+    float epsylon = 1.0f;
+    float stala = 1.0f;
 
-    epsylon = 1.0;
-
-    double a;
-//    a = 1.0 + epsylon;
-
-    while(1.0 + epsylon > stala) {
-        epsylon /= 2.0;
+    while(1.0f + epsylon > stala) {
+        epsylon /= 2.0f;
         t += 1;
-//        a = 1.0f + epsylon;
+
     }
 
     cout << "liczba bitow: " << t << endl;
