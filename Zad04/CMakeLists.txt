@@ -4,4 +4,4 @@ project(MetodyObliczeniowe)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Zad2 main.cpp)
+add_executable(Zad04 main.cpp)
