@@ -79,6 +79,7 @@ void destroyVector(double *vector) {
     delete [] vector;
 }
 
+
 void matrixInput(double **matrix, int rows, int columns) {
     ifstream myfile;
     myfile.open ("matrix.txt");

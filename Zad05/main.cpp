@@ -100,6 +100,7 @@ void destroyVector(double *vector) {
     delete [] vector;
 }
 
+
 void printMatrix(double **matrix, int rows, int columns) {
     for(int i = 0; i < rows; i++) {
         for(int j = 0; j < columns; j++) {
@@ -229,7 +230,5 @@ void printMatrixIndexes(double **matrix, int *indexes, int n) {
         cout << endl;
     }
 }
-
-
 
 
