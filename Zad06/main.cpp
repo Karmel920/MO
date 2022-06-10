@@ -35,7 +35,7 @@ int main(){
 
 
     cout << endl << "\n\tWektor u: " << endl;
-    printVector(u, n-1);
+    printVector(u, n);
     cout << endl << "\n\tWektor d: " << endl;
     printVector(d, n);
     cout << endl << "\n\tWektor l: " << endl;
